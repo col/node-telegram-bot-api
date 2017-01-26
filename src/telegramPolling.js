@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('debug')('node-telegram-bot-api');
 const ANOTHER_WEB_HOOK_USED = 409;
 
