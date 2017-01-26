@@ -70,8 +70,9 @@ class TelegramBot extends EventEmitter {
    *  for more information on this option and its consequences.
    * @see https://core.telegram.org/bots/api
    */
-  constructor(token, options = {}) {
+  constructor(token, options) {
     super();
+    options = options || {}
     this.token = token;
     this.options = options;
     this.options.polling = (typeof options.polling === 'undefined') ? false : options.polling;
@@ -130,7 +131,8 @@ class TelegramBot extends EventEmitter {
    * @private
    * @return {Promise}
    */
-  _request(_path, options = {}) {
+  _request(_path, options) {
+    options = options || {}
     if (!this.token) {
       throw new Error('Telegram Bot Token not provided!');
     }
@@ -250,7 +252,8 @@ class TelegramBot extends EventEmitter {
    * @param  {Boolean} [options.restart=true] Consecutive calls to this method causes polling to be restarted
    * @return {Promise}
    */
-  startPolling(options = {}) {
+  startPolling(options) {
+    options = options || {}
     if (this.hasOpenWebHook()) {
       return Promise.reject(new Error('Polling and WebHook are mutually exclusive'));
     }
@@ -352,7 +355,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#setwebhook
    */
-  setWebHook(url, options = {}) {
+  setWebHook(url, options) {
+    options = options || {}
     /* The older method signature was setWebHook(url, cert).
      * We need to ensure backwards-compatibility while maintaining
      * consistency of the method signatures throughout the library */
@@ -422,7 +426,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#getupdates
    */
-  getUpdates(form = {}) {
+  getUpdates(form) {
+    form = form || {}
     /* The older method signature was getUpdates(timeout, limit, offset).
      * We need to ensure backwards-compatibility while maintaining
      * consistency of the method signatures throughout the library */
@@ -535,7 +540,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendmessage
    */
-  sendMessage(chatId, text, form = {}) {
+  sendMessage(chatId, text, form) {
+    form = form || {}
     form.chat_id = chatId;
     form.text = text;
     return this._request('sendMessage', { form });
@@ -549,7 +555,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#answerinlinequery
    */
-  answerInlineQuery(inlineQueryId, results, form = {}) {
+  answerInlineQuery(inlineQueryId, results, form) {
+    form = form || {}
     form.inline_query_id = inlineQueryId;
     form.results = JSON.stringify(results);
     return this._request('answerInlineQuery', { form });
@@ -564,7 +571,8 @@ class TelegramBot extends EventEmitter {
    * @param  {Object} [options] Additional Telegram query options
    * @return {Promise}
    */
-  forwardMessage(chatId, fromChatId, messageId, form = {}) {
+  forwardMessage(chatId, fromChatId, messageId, form) {
+    form = form || {}
     form.chat_id = chatId;
     form.from_chat_id = fromChatId;
     form.message_id = messageId;
@@ -580,7 +588,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendphoto
    */
-  sendPhoto(chatId, photo, options = {}) {
+  sendPhoto(chatId, photo, options) {
+    options = options || {}
     const opts = {
       qs: options,
     };
@@ -604,7 +613,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendaudio
    */
-  sendAudio(chatId, audio, options = {}) {
+  sendAudio(chatId, audio, options) {
+    options = options || {}
     const opts = {
       qs: options
     };
@@ -629,7 +639,9 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendDocument
    */
-  sendDocument(chatId, doc, options = {}, fileOpts = {}) {
+  sendDocument(chatId, doc, options, fileOpts) {
+    options = options || {}
+    fileOpts = fileOpts || {}
     const opts = {
       qs: options
     };
@@ -656,7 +668,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendsticker
    */
-  sendSticker(chatId, sticker, options = {}) {
+  sendSticker(chatId, sticker, options) {
+    options = options || {}
     const opts = {
       qs: options
     };
@@ -680,7 +693,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendvideo
    */
-  sendVideo(chatId, video, options = {}) {
+  sendVideo(chatId, video, options) {
+    options = options || {}
     const opts = {
       qs: options
     };
@@ -704,7 +718,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendvoice
    */
-  sendVoice(chatId, voice, options = {}) {
+  sendVoice(chatId, voice, options) {
+    options = options || {}
     const opts = {
       qs: options
     };
@@ -792,7 +807,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#answercallbackquery
    */
-  answerCallbackQuery(callbackQueryId, text, showAlert, form = {}) {
+  answerCallbackQuery(callbackQueryId, text, showAlert, form) {
+    form = form || {}
     form.callback_query_id = callbackQueryId;
     form.text = text;
     form.show_alert = showAlert;
@@ -812,7 +828,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#editmessagetext
    */
-  editMessageText(text, form = {}) {
+  editMessageText(text, form) {
+    form = form || {}
     form.text = text;
     return this._request('editMessageText', { form });
   }
@@ -830,7 +847,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#editmessagecaption
    */
-  editMessageCaption(caption, form = {}) {
+  editMessageCaption(caption, form) {
+    form = form || {}
     form.caption = caption;
     return this._request('editMessageCaption', { form });
   }
@@ -848,7 +866,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#editmessagetext
    */
-  editMessageReplyMarkup(replyMarkup, form = {}) {
+  editMessageReplyMarkup(replyMarkup, form) {
+    form = form || {}
     form.reply_markup = replyMarkup;
     return this._request('editMessageReplyMarkup', { form });
   }
@@ -864,7 +883,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#getuserprofilephotos
    */
-  getUserProfilePhotos(userId, form = {}) {
+  getUserProfilePhotos(userId, form) {
+    form = form || {}
     /* The older method signature was getUserProfilePhotos(userId, offset, limit).
      * We need to ensure backwards-compatibility while maintaining
      * consistency of the method signatures throughout the library */
@@ -892,7 +912,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendlocation
    */
-  sendLocation(chatId, latitude, longitude, form = {}) {
+  sendLocation(chatId, latitude, longitude, form) {
+    form = form || {}
     form.chat_id = chatId;
     form.latitude = latitude;
     form.longitude = longitude;
@@ -912,7 +933,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendvenue
    */
-  sendVenue(chatId, latitude, longitude, title, address, form = {}) {
+  sendVenue(chatId, latitude, longitude, title, address, form) {
+    form = form || {}
     form.chat_id = chatId;
     form.latitude = latitude;
     form.longitude = longitude;
@@ -932,7 +954,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendcontact
    */
-  sendContact(chatId, phoneNumber, firstName, form = {}) {
+  sendContact(chatId, phoneNumber, firstName, form) {
+    form = form || {}
     form.chat_id = chatId;
     form.phone_number = phoneNumber;
     form.first_name = firstName;
@@ -1098,7 +1121,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#sendgame
    */
-  sendGame(chatId, gameShortName, form = {}) {
+  sendGame(chatId, gameShortName, form) {
+    form = form || {}
     form.chat_id = chatId;
     form.game_short_name = gameShortName;
     return this._request('sendGame', { form });
@@ -1112,7 +1136,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#setgamescore
    */
-  setGameScore(userId, score, form = {}) {
+  setGameScore(userId, score, form) {
+    form = form || {}
     form.user_id = userId;
     form.score = score;
     return this._request('setGameScore', { form });
@@ -1125,7 +1150,8 @@ class TelegramBot extends EventEmitter {
    * @return {Promise}
    * @see https://core.telegram.org/bots/api#getgamehighscores
    */
-  getGameHighScores(userId, form = {}) {
+  getGameHighScores(userId, form) {
+    form = form || {}
     form.user_id = userId;
     return this._request('getGameHighScores', { form });
   }

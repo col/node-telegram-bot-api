@@ -15,7 +15,8 @@ class TelegramBotPolling {
    * @param  {Function} callback Function for processing a new update
    * @see https://core.telegram.org/bots/api#getupdates
    */
-  constructor(request, options = {}, callback) {
+  constructor(request, options, callback) {
+    options = options || {};
     /* eslint-disable no-param-reassign */
     if (typeof options === 'function') {
       callback = options;
@@ -43,7 +44,8 @@ class TelegramBotPolling {
    * @param  {Object} [options.restart]
    * @return {Promise}
    */
-  start(options = {}) {
+  start(options) {
+    options = options || {};
     if (this._lastRequest) {
       if (!options.restart) {
         return Promise.resolve();
@@ -65,7 +67,8 @@ class TelegramBotPolling {
    * @param  {String} [options.reason] Reason for stopping polling
    * @return {Promise}
    */
-  stop(options = {}) {
+  stop(options) {
+    options = options || {};
     if (!this._lastRequest) {
       return Promise.resolve();
     }
