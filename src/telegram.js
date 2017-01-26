@@ -1,3 +1,5 @@
+'use strict';
+
 const TelegramBotWebHook = require('./telegramWebHook');
 const TelegramBotPolling = require('./telegramPolling');
 const debug = require('debug')('node-telegram-bot-api');
