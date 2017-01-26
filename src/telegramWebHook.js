@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('debug')('node-telegram-bot-api');
 const https = require('https');
 const http = require('http');
